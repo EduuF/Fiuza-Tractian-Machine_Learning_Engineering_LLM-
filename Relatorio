@@ -1,0 +1,2 @@
+Arquitetura FastAPI utilizada: https://github.com/betaacid/FastAPI-Reference-App
+Banco escolhido: ChromaDB. Motivo: Pode ser facilmente mantido localmente sem a necessidade de uma VM up para hostear.
