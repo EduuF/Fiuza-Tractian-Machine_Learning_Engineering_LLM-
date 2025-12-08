@@ -1,4 +1,5 @@
-from backend.app.schemas.question_schemas import QuestionResponse, QuestionRequest
+from backend.app.schemas.question_schemas import QuestionRequest, QuestionResponse
+
 
 def ask_question_services(body: QuestionRequest) -> QuestionResponse:
     # TODO: Lógica principal do RAG
@@ -13,5 +14,5 @@ def ask_question_services(body: QuestionRequest) -> QuestionResponse:
         answer="The motor's power consumption is 2.3 kW.",
         references=[
             "the motor xxx has requires 2.3kw to operate at a 60hz line frequency"
-        ]
+        ],
     )
