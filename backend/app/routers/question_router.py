@@ -1,15 +1,17 @@
 from fastapi import APIRouter, status
+
 from backend.app.schemas.question_schemas import QuestionRequest, QuestionResponse
 from backend.app.services.question.ask_question_services import ask_question_services
 
 question_router = APIRouter()
+
 
 @question_router.post(
     "/question",
     response_model=QuestionResponse,
     status_code=status.HTTP_200_OK,
     summary="Ask a question based on uploaded documents",
-    tags=["Question"]
+    tags=["Question"],
 )
 async def ask_question(body: QuestionRequest) -> QuestionResponse:
     """Ask questions based on the uploaded content."""
