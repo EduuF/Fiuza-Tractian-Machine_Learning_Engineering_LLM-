@@ -1,4 +1,4 @@
-"""main API app file."""
+"""Main FastAPI Application Entry Point."""
 
 import uvicorn
 from fastapi import FastAPI
@@ -6,43 +6,21 @@ from fastapi import FastAPI
 from backend.app.routers.health_checker import health_checker_router
 from backend.app.routers.question_router import question_router
 from backend.app.routers.upload_document_router import documents_router
-
+from logs.log_generator import log_message
 from settings import SETTINGS_VAR
 
-API_HOST = SETTINGS_VAR.API_HOST
-API_PORT = SETTINGS_VAR.API_PORT
-
-"""
-from app.errors.exception_handlers import (
-    swapi_character_error_handler,
-    character_not_found_error_handler,
-    not_found_error_handler,
-    server_error_handler,
-    index_out_of_range_error_handler,
+app = FastAPI(
+    title="Tractian Challenge - RAG API",
+    description="API for Document Ingestion and Retrieval Augmented Generation",
+    version="1.0.0",
 )
-
-from app.errors.custom_exceptions import (
-    SwapiCharacterError,
-    CharacterNotFoundError,
-    VehicleNotFoundError,
-    SwapiVehicleError,
-)
-"""
-
-app = FastAPI()
 
 app.include_router(documents_router)
 app.include_router(question_router)
 app.include_router(health_checker_router)
 
-"""
-app.add_exception_handler(SwapiCharacterError, swapi_character_error_handler)
-app.add_exception_handler(CharacterNotFoundError, character_not_found_error_handler)
-app.add_exception_handler(VehicleNotFoundError, character_not_found_error_handler)
-app.add_exception_handler(IndexError, index_out_of_range_error_handler)
-app.add_exception_handler(status.HTTP_404_NOT_FOUND, not_found_error_handler)
-app.add_exception_handler(status.HTTP_500_INTERNAL_SERVER_ERROR, server_error_handler)
-"""
-
 if __name__ == "__main__":
-    uvicorn.run("app:app", host=API_HOST, port=API_PORT, reload=True)
+    log_message("Booting API...", "info")
+    uvicorn.run(
+        "app:app", host=SETTINGS_VAR.API_HOST, port=SETTINGS_VAR.API_PORT, reload=False
+    )

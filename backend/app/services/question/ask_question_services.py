@@ -1,18 +1,18 @@
 from backend.app.schemas.question_schemas import QuestionRequest, QuestionResponse
+from backend.core.ask_question_pipeline import get_ask_question_pipeline
+from logs.log_generator import log_message
 
 
 def ask_question_services(body: QuestionRequest) -> QuestionResponse:
-    # TODO: Lógica principal do RAG
-    # 1 - Converter body.question em embedding (vetor)
-    # 2 - Buscar chunks similares no ChromaDB (Retrieval)
-    # 3 - Montar o prompt com os chunks encontrados
-    # 4 - Enviar para a LLM (OpenAI/Anthropic/Local) gerar a resposta
+    """Orchestrates the question-answering flow."""
+    # Call question pipeline
+    ask_question_pipeline = get_ask_question_pipeline()
+    result = ask_question_pipeline.run(body.question)
 
-    # Mockando a resposta conforme exemplo do PDF para validar a interface da API
-
-    return QuestionResponse(
-        answer="The motor's power consumption is 2.3 kW.",
-        references=[
-            "the motor xxx has requires 2.3kw to operate at a 60hz line frequency"
-        ],
+    ref_count = len(result.get("references", []))
+    log_message(
+        f"✅ Service: Answer generated based on {ref_count} reference(s) | Answer: {result['answer'][:50]}...",
+        "info",
     )
+
+    return QuestionResponse(answer=result["answer"], references=result["references"])

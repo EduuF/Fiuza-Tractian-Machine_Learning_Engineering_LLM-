@@ -1,3 +1,5 @@
+"""Basemodel schemas for question endpoints."""
+
 from typing import List
 
 from pydantic import BaseModel
