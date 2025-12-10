@@ -35,6 +35,7 @@ class Settings(BaseSettings):
 
     # --- Embedding Models ---
     OPENAI_EMBED_MODEL_NAME: str = Field(default="text-embedding-3-small")
+    GOOGLE_EMBED_MODEL: str = Field(default="models/text-embedding-004")
 
     # --- LLM Generation Models ---
     OPENAI_LLM_MODEL_NAME: str = Field(
