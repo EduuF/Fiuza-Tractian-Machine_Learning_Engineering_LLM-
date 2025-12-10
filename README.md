@@ -56,6 +56,31 @@ backend/
 
 Create a `.env` file in the root directory. You can use the `.env.example` file in the root directory as a template:
 
+```
+# Keys
+OPENAI_API_KEY=
+GOOGLE_API_KEY=
+
+# API configuration
+API_HOST=localhost
+API_PORT=8000
+
+# Chroma DB
+CHROMA_DB_PATH=backend/ChromaDB/DB_instance
+
+# Embedding
+OPENAI_EMBED_MODEL_NAME=text-embedding-3-small
+
+# LLM
+OPENAI_LLM_MODEL_NAME=gpt-3.5-turbo
+GOOGLE_LLM_MODEL_NAME=gemini-2.5-flash
+
+# RAG Configs
+CHUNK_SIZE=1000
+CHUNK_OVERLAP=200
+LLM_TEMPERATURE=0.4
+RAG_RETRIEVAL_COUNT=5
+```
 
 ### 2. Running with Docker (Recommended)
 
