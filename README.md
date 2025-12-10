@@ -70,6 +70,7 @@ CHROMA_DB_PATH=backend/ChromaDB/DB_instance
 
 # Embedding
 OPENAI_EMBED_MODEL_NAME=text-embedding-3-small
+GOOGLE_EMBED_MODEL=models/text-embedding-004
 
 # LLM
 OPENAI_LLM_MODEL_NAME=gpt-3.5-turbo
