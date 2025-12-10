@@ -23,7 +23,7 @@ class GeminiEmbeddingBuilder:
         try:
             # O modelo text-embedding-004 é o mais atual e eficiente
             model = GoogleGenerativeAIEmbeddings(
-                model="models/text-embedding-004",
+                model=SETTINGS_VAR.GOOGLE_EMBED_MODEL,
                 google_api_key=SETTINGS_VAR.GOOGLE_API_KEY
             )
             log_message("✅ Embeddings: Google Gemini model initialized successfully.", "info")
