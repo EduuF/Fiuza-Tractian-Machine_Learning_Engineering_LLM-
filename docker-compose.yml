@@ -1,11 +1,13 @@
+version: '3.8'
+
 services:
   backend:
     build: .
-    container_name: tractian_challenge_llm
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
-    environment:
-      - CHROMA_DB_PATH=/app/chroma_db_data
-    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+      - ./backend/ChromaDB/DB_instance:/app/backend/ChromaDB/DB_instance
+      - ./.hf_cache:/root/.cache/huggingface
+
+    env_file:
+      - .env
