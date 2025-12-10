@@ -1,42 +1,76 @@
-"""
-This module provides configuration management using Pydantic Settings,
-allowing flexible loading of environment variables from different .env files.
-"""
-
 from functools import lru_cache
-from pydantic import Field
+from pathlib import Path
+
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Resolve the project root directory dynamically
+BASE_DIR = Path(__file__).resolve().parent
 
 
 class Settings(BaseSettings):
     """
-    Application settings configuration class.
-
-    Loads settings from environment variables or .env files.
+    Application configuration settings.
+    Values are read from .env file or environment variables.
     """
 
-    # V-ENV
-    API_HOST: str = Field(description="Host address of the API", default="localhost")
-    API_PORT: int = Field(description="Port which API will be exposed", default=8000)
+    # --- Authentication Keys ---
+    OPENAI_API_KEY: SecretStr = Field(
+        default=SecretStr(""), description="OpenAI API Key"
+    )
+    GOOGLE_API_KEY: SecretStr = Field(
+        default=SecretStr(""), description="Google Gemini API Key"
+    )
 
+    # --- API Configuration ---
+    API_HOST: str = Field(default="0.0.0.0", description="Host to bind the server")
+    API_PORT: int = Field(default=8000, description="Port to bind the server")
+
+    # --- Storage Configuration ---
+    # Relative path from project root
+    CHROMA_DB_PATH: str = Field(
+        default="./backend/ChromaDB/DB_instance",
+        description="Path for Vector DB persistence",
+    )
+
+    # --- Embedding Models ---
+    OPENAI_EMBED_MODEL_NAME: str = Field(default="text-embedding-3-small")
+
+    # --- LLM Generation Models ---
+    OPENAI_LLM_MODEL_NAME: str = Field(
+        default="gpt-3.5-turbo", description="Primary LLM Model"
+    )
+    GOOGLE_LLM_MODEL_NAME: str = Field(
+        default="gemini-pro", description="Fallback Gemini Model"
+    )
+
+    # --- RAG Tuning ---
+    CHUNK_SIZE: int = 1000
+    CHUNK_OVERLAP: int = 200
+    LLM_TEMPERATURE: float = 0.5
+    RAG_RETRIEVAL_COUNT: int = Field(
+        default=3, description="Top-K chunks to retrieve for RAG"
+    )
+
+    @property
+    def database_path(self) -> str:
+        """Returns the absolute OS path for the database, ensuring portability."""
+        absolute_path = BASE_DIR / self.CHROMA_DB_PATH
+        return str(absolute_path.resolve())
 
 
 @lru_cache(maxsize=1)
 def get_settings(path_var: str = ".env") -> Settings:
-    """
-    Get application settings with caching.
-
-    Args:
-        path_var: Path to environment file (default: ".env")
-
-    Returns:
-        Settings: Configured settings instance
-    """
-
+    """Singleton factory for Settings."""
     class DynamicSettings(Settings):
-        model_config = SettingsConfigDict(env_file=path_var, case_sensitive=True)
+        model_config = SettingsConfigDict(
+            env_file=path_var,
+            case_sensitive=True,
+            extra="ignore",
+            env_file_encoding="utf-8",
+        )
 
-    return DynamicSettings()  # type: ignore
+    return DynamicSettings()
 
 
 SETTINGS_VAR = get_settings(".env")
