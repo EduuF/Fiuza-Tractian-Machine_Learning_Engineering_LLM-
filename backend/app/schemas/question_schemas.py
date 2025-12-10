@@ -1,0 +1,14 @@
+"""Basemodel schemas for question endpoints."""
+
+from typing import List
+
+from pydantic import BaseModel
+
+
+class QuestionRequest(BaseModel):
+    question: str
+
+
+class QuestionResponse(BaseModel):
+    answer: str
+    references: List[str]

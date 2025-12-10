@@ -1,0 +1,14 @@
+fastapi==0.121.1
+uvicorn==0.35.0
+pydantic==2.12.3
+PyYAML==6.0.3
+colorama==0.4.6
+pypdf==6.0.0
+langchain
+python-multipart
+langchain-community
+langchain-chroma
+langchain_openai
+langchain_google_genai
+langchain-text-splitters
+chromadb==1.3.5
