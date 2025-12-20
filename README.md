@@ -5,7 +5,7 @@
 ![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![LangChain](https://img.shields.io/badge/LangChain-Core-green?style=for-the-badge)
 
-A **Retrieval-Augmented Generation (RAG)** system built for the Tractian Machine Learning Engineering Tech Challenge.  
+A **Retrieval-Augmented Generation (RAG)** system. 
 This API allows users to ingest PDF documents and ask context-aware questions using LLM strategies.
 
 ---
